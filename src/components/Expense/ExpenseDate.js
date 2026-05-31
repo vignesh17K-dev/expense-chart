@@ -1,27 +1,15 @@
-import { Card } from "reactstrap"
+function ExpenseDate(props) {
+  const month = props.newdate.toLocaleString('en-US', { month: 'short' });
+  const day = props.newdate.toLocaleString('en-US', { day: '2-digit' });
+  const year = props.newdate.getFullYear();
 
-function ExpenseDate(props){
-
-    var month = props.newdate.toLocaleString('en-US',{month:"short"})
-    var day = props.newdate.toLocaleString('en-US',{day:"2-digit"})
-    var year = props.newdate.getFullYear()
-
-
-return (
-
-<Card  className="datebox">
-  <div className="text-light text-center">
-   <div className="month p-1"> {month} </div>
-   <div className="year"> {year} </div>
-   <div className="day">  {day}  </div>
-   </div>  
-</Card>
-
-)
-
-
+  return (
+    <div className="date-badge">
+      <span className="date-badge__month">{month}</span>
+      <span className="date-badge__day">{day}</span>
+      <span className="date-badge__year">{year}</span>
+    </div>
+  );
 }
 
-
-
-export default ExpenseDate
+export default ExpenseDate;

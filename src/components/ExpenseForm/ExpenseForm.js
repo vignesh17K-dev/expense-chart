@@ -1,79 +1,113 @@
-import { Card, Container } from "reactstrap"
-import "./ExpenseForm.css"
-import React,{useState} from "react"
+import './ExpenseForm.css';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { FiPlus } from 'react-icons/fi';
 
-function ExpenseForm(props){
+function ExpenseForm({ ontransfer, alwaysOpen = false }) {
+  const navigate = useNavigate();
+  const [currtext, updatetext] = useState('');
+  const [curramount, updateamount] = useState('');
+  const [currdate, updatedate] = useState('');
+  const [currexpcard, showexpcard] = useState(alwaysOpen);
 
-const [currtext,updatetext] = useState("")
-const [curramount,updateamount] = useState("")
-const [currdate,updatedate] = useState("")
+  function update(event) {
+    event.preventDefault();
+    const newdata = {
+      title: currtext,
+      price: parseFloat(curramount),
+      date: new Date(currdate),
+    };
+    ontransfer(newdata);
+    updatetext('');
+    updateamount('');
+    updatedate('');
+    if (!alwaysOpen) {
+      showexpcard(false);
+    }
+  }
 
-const [currexpcard,showexpcard] = useState(false)
+  function expcard() {
+    showexpcard(true);
+  }
 
+  function cancel() {
+    if (alwaysOpen) {
+      navigate(-1);
+    } else {
+      showexpcard(false);
+      updatetext('');
+      updateamount('');
+      updatedate('');
+    }
+  }
 
+  if (alwaysOpen || currexpcard) {
+    return (
+      <div className="expense-form">
+        <div className="expense-form__card">
+          <h2 className="expense-form__heading">Add New Expense</h2>
+          <form onSubmit={update}>
+            <div className="expense-form__field">
+              <label htmlFor="title">Title</label>
+              <input
+                id="title"
+                type="text"
+                value={currtext}
+                onChange={(event) => updatetext(event.target.value)}
+                placeholder="e.g. Groceries"
+                required
+              />
+            </div>
 
+            <div className="expense-form__row">
+              <div className="expense-form__field">
+                <label htmlFor="amount">Amount</label>
+                <input
+                  id="amount"
+                  type="number"
+                  min="0.01"
+                  step="0.01"
+                  value={curramount}
+                  onChange={(event) => updateamount(event.target.value)}
+                  placeholder="0.00"
+                  required
+                />
+              </div>
 
-function update(event){
-event.preventDefault()
-updatetext("")
-updateamount("")
-updatedate("")
-var newdata ={
-    title:currtext,
-    price:curramount,
-    date:new Date(currdate)
-}
-props.ontransfer(newdata)
-}
+              <div className="expense-form__field">
+                <label htmlFor="date">Date</label>
+                <input
+                  id="date"
+                  type="date"
+                  value={currdate}
+                  onChange={(event) => updatedate(event.target.value)}
+                  required
+                />
+              </div>
+            </div>
 
-function expcard(){
-showexpcard(!false)
-}
+            <div className="expense-form__actions">
+              <button type="button" className="btn-secondary" onClick={cancel}>
+                Cancel
+              </button>
+              <button type="submit" className="btn-primary">
+                Add Expense
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    );
+  }
 
-function cancel(){
-    showexpcard(false)
-}
-
-return (
-
-    <Container className="form">
-<Card className={currexpcard ? "p-4 my-3 formcard" :"d-none"}>
-    
-    <form onSubmit={update}>
-     <div className="inputbox mb-4 py-5">
-
-     <label className="fw-bold p-2">Title</label>
-    <input  type="text" value={currtext} onChange={(event)=>updatetext(event.target.value)} className="form-control " />
-
-    <label className="fw-bold p-2">Amount</label>
-    <input type="number"   value={curramount} onChange={(event)=>updateamount(event.target.value)}  className="form-control" />
-
+  return (
+    <div className="expense-form">
+      <button className="expense-form__toggle" onClick={expcard}>
+        <FiPlus />
+        Add New Expense
+      </button>
     </div>
-    
-<div className="d-flex">
-<label className="fw-bold p-2">Date</label>
-   <input type="date"  value={currdate} onChange={(event)=>updatedate(event.target.value)}  className="form-control date"/>
-   </div>
-
-   <button type="submit" className="btn btns btn-primary float-end ">Add Expense</button>
-   <button type="submit" className="btn btns btn-primary float-end px-3 mx-4" onClick={cancel}>Cancel</button>
-</form>
-
-
-
-</Card>
-
-<Card className= {currexpcard ? "d-none":"extformcard p-3 my-3" }>
- <button className="formbtn btn-primary text-center" onClick={expcard}>Add New Expense</button>
-</Card>
-
-
-</Container>
-)
-
-
-
+  );
 }
 
-
-export default ExpenseForm
+export default ExpenseForm;

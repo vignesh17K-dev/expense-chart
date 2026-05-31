@@ -1,32 +1,31 @@
-import "./ChartBar.css"
+import './ChartBar.css';
 
-
-function ChartBar(props){
-var Fill
- if(props.max===0){
-    Fill = 0 + "%"
- } else{
- Fill = Math.floor((props.price/props.max)*100) + "%"
- }
-
-return (
-
-<div className="barbox ">
-
-<div className="innerbar">
-
-  <div className="fill" style={{height:Fill}} >
-
-   </div>
-</div>
-
- <div className="barname">
-{props.name}
-    </div>
- </div>
-
-)
+function formatBarValue(value) {
+  if (value >= 1000) {
+    return '$' + (value / 1000).toFixed(1) + 'k';
+  }
+  return '$' + Math.round(value);
 }
 
+function ChartBar(props) {
+  let fill;
+  if (props.max === 0) {
+    fill = '0%';
+  } else {
+    fill = Math.floor((props.price / props.max) * 100) + '%';
+  }
 
-export default ChartBar
+  return (
+    <div className="barbox">
+      {props.price > 0 && (
+        <span className="barbox__value">{formatBarValue(props.price)}</span>
+      )}
+      <div className="innerbar">
+        <div className="fill" style={{ height: fill }} />
+      </div>
+      <span className="barname">{props.name}</span>
+    </div>
+  );
+}
+
+export default ChartBar;

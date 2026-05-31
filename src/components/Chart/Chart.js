@@ -1,53 +1,25 @@
-import ChartBar from "./ChartBar"
-import { Card, CardBody, Col, Container, Row } from "reactstrap"
-import "./Chart.css"
+import ChartBar from './ChartBar';
+import './Chart.css';
 
+function Chart(props) {
+  const allvalues = props.data.map((ele) => ele.value);
+  const maxvalue = Math.max(...allvalues);
 
-
-
-function Chart(props){
-
-
-var allvalues = props.data.map(ele=>(
-  ele.value
-))
-var maxvalue = Math.max(...allvalues)
-// console.log(maxvalue)
-return (
-
-
-<Container>
-
-<Row>
-<Col md={12}>
-<Card  className="chart my-3 p-1 ">
-
-  <CardBody  >
-
-  <main className="main" > 
-{props.data.map(ele=>(
-  <ChartBar key = {ele.label} max={maxvalue} name={ele.label} price={ele.value}/>
-))}
-
-
-   </main>
-
-            
-  </CardBody>
- 
-
-</Card>
-
-</Col>
-
-</Row>
-
-
-</Container>
-
-)
-
+  return (
+    <div className="chart-container">
+      <h3 className="chart-container__title">Monthly Overview</h3>
+      <div className="chart-container__bars">
+        {props.data.map((ele) => (
+          <ChartBar
+            key={ele.label}
+            max={maxvalue}
+            name={ele.label}
+            price={ele.value}
+          />
+        ))}
+      </div>
+    </div>
+  );
 }
 
-
-export default Chart
+export default Chart;

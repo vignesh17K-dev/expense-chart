@@ -1,39 +1,24 @@
-import { Card, CardBody, Col, Container, Row } from "reactstrap"
-import ExpenseDate from "./ExpenseDate"
+import ExpenseDate from './ExpenseDate';
 
-
-function ExpenseCard(props){
-
-
-
-
-return(
-
-
-<Container className="py-2">
-   <Row>
-   <Col md={12}>
-    <Card className="boxcolor">
-    <CardBody className="box">
- 
-           <div className="titlebox">
-               <ExpenseDate newdate ={props.date}/>
-               <h2 className="mx-5 text-light">{props.title}</h2>
-           </div>
-
-           <div>
-            <button className="btn btn-primary">$ {props.price}</button>
-           </div>
-
-    </CardBody>  
-    </Card>
-     </Col>
-   </Row> 
-</Container>
-
-)
-
+function formatCurrency(price) {
+  return parseFloat(price).toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  });
 }
 
+function ExpenseCard(props) {
+  return (
+    <div className="expense-card">
+      <div className="expense-card__left">
+        <ExpenseDate newdate={props.date} />
+        <h2 className="expense-card__title">{props.title}</h2>
+      </div>
+      <span className="expense-card__price">
+        {formatCurrency(props.price)}
+      </span>
+    </div>
+  );
+}
 
-export default ExpenseCard
+export default ExpenseCard;
